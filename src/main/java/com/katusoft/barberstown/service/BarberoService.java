@@ -1,6 +1,7 @@
 package com.katusoft.barberstown.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,18 @@ public class BarberoService {
 
     public Barbero saveBarbero(Barbero barbero){
         return barberoRepository.save(barbero);
+    }
+
+    public Optional<Barbero> getBarberoById(Long id){
+        return  barberoRepository.findById(id);
+    }
+
+    public boolean deleteBarberoById(Long id){
+        if(!barberoRepository.existsById(id)){
+            return false;
+        }
+        barberoRepository.deleteById(id);
+        return true;
     }
 
 }

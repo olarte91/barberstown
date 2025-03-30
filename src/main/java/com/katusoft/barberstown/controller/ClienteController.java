@@ -7,8 +7,11 @@ import com.katusoft.barberstown.model.Cliente;
 import com.katusoft.barberstown.service.ClienteService;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -30,6 +33,11 @@ public class ClienteController {
     @PostMapping
     public Cliente saveCliente(@RequestBody Cliente cliente){
         return clienteService.saveCliente(cliente);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<Cliente>> getClienteById(@PathVariable Long id){
+        return clienteService.getClienteById(id);
     }
 
     
