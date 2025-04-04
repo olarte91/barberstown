@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,8 +45,12 @@ public class BarberoController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Barbero> getBarberoById(@PathVariable Long id) {
-        return barberoService.getBarberoById(id);
+    public ResponseEntity<Barbero> getBarberoById(@PathVariable Long id) {
+        Optional<Barbero> barberoOptional = barberoService.getBarberoById(id);
+
+        return barberoOptional
+        .map(barbero -> ResponseEntity.ok(barbero))
+        .orElseGet(()-> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
@@ -54,6 +59,11 @@ public class BarberoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Barbero no encontrado");
         }
         return ResponseEntity.ok("Barbero eliminado correctamente");
+    }
+
+    @PutMapping("/{id}")
+    public Barbero actualizarBarbero(@PathVariable Long id, @RequestBody Barbero barbero){
+        return barberoService.actualizarBarbero(id, barbero);
     }
     
     

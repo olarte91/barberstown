@@ -29,10 +29,7 @@ public class Cliente {
     @Column
     private String telefono;
 
-    public List<Cita> getCitas() {
-        return citas;
-    }
-
+    
     
     @Column(nullable = false)
     private String correo;
@@ -40,6 +37,9 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Cita> citas = new ArrayList<>();
     
+    public List<Cita> getCitas() {
+        return citas;
+    }
     public void setCitas(List<Cita> citas) {
         this.citas = citas;
     }
