@@ -28,4 +28,12 @@ public class ServicioService {
     public Optional<Servicio> getServicioById(Long id){
         return servicioRepository.findById(id);
     }
+
+    public boolean deleteServicioById(Long id){
+        if(!servicioRepository.existsById(id)){
+            return false;
+        }
+        servicioRepository.deleteById(id);
+        return true;
+    }
 }
