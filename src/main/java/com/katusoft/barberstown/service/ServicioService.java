@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.katusoft.barberstown.exception.ServicioNoEncontradoException;
 import com.katusoft.barberstown.model.Servicio;
 import com.katusoft.barberstown.repository.ServicioRepository;
 
@@ -35,5 +36,17 @@ public class ServicioService {
         }
         servicioRepository.deleteById(id);
         return true;
+    }
+
+    public Servicio actualizarServicio (Long id, Servicio servicioActualizado){
+        Servicio servicio = servicioRepository.findById(id)
+        .orElseThrow(() -> new ServicioNoEncontradoException(id));
+
+        if(servicioActualizado.getNombre() != null) servicio.setNombre(servicioActualizado.getNombre());
+        if(servicioActualizado.getDuracion() != null) servicio.setDuracion(servicioActualizado.getDuracion());
+        if(servicioActualizado.getValor() != servicio.getValor()) servicio.setValor(servicioActualizado.getValor());
+
+        return servicioRepository.save(servicio);
+
     }
 }
