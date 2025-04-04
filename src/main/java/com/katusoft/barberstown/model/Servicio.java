@@ -35,7 +35,6 @@ public class Servicio {
     }
 
     @Column
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime duracion;
 
     @Column(nullable = false)

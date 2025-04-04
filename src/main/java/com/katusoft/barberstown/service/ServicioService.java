@@ -1,6 +1,7 @@
 package com.katusoft.barberstown.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -22,5 +23,9 @@ public class ServicioService {
     public Servicio saveServicio(Servicio servicio){
         
         return servicioRepository.save(servicio);
+    }
+
+    public Optional<Servicio> getServicioById(Long id){
+        return servicioRepository.findById(id);
     }
 }
