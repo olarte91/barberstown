@@ -1,6 +1,7 @@
 package com.katusoft.barberstown.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,10 @@ public class MetodoPagoService {
 
     public List<MetodoPago> getAllMetodosPago (){
         return metodoPagoRepository.findAll();
+    }
+
+    public Optional<MetodoPago> getMetodoPagoById(Long id){
+        return metodoPagoRepository.findById(id);
     }
 
     public MetodoPago saveMetodoPago(MetodoPago metodoPago){
