@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.katusoft.barberstown.exception.MetodoPagoNoEncontradoException;
 import com.katusoft.barberstown.model.MetodoPago;
 import com.katusoft.barberstown.repository.MetodoPagoRepository;
 
@@ -35,5 +36,15 @@ public class MetodoPagoService {
         }
         metodoPagoRepository.deleteById(id);
         return true;
+    }
+
+    public MetodoPago actualizarMetodoPago(Long id, MetodoPago metodoPago){
+        MetodoPago metodoPagoExistente = metodoPagoRepository.findById(id)
+        .orElseThrow(() -> new MetodoPagoNoEncontradoException(id));
+
+        metodoPagoExistente.setNombre(metodoPago.getNombre());
+
+        return metodoPagoRepository.save(metodoPagoExistente);
+
     }
 }
