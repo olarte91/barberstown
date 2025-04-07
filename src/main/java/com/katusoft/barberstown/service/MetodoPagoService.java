@@ -28,4 +28,12 @@ public class MetodoPagoService {
     public MetodoPago saveMetodoPago(MetodoPago metodoPago){
         return metodoPagoRepository.save(metodoPago);
     }
+
+    public boolean deleteMetodoDePagoById(Long id){
+        if(!metodoPagoRepository.existsById(id)){
+            return false;
+        }
+        metodoPagoRepository.deleteById(id);
+        return true;
+    }
 }
