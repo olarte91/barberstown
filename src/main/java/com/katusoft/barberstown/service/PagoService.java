@@ -1,6 +1,7 @@
 package com.katusoft.barberstown.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,10 @@ public class PagoService {
 
     public List<Pago> getAllPagos(){
         return pagoRepository.findAll();
+    }
+
+    public Optional<Pago> getPagoById(Long id){
+        return pagoRepository.findById(id);
     }
 
 

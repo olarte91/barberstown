@@ -9,6 +9,7 @@ import com.katusoft.barberstown.service.PagoService;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api/pagos")
@@ -25,6 +26,10 @@ public class PagoController {
         return pagoService.getAllPagos();
     }
     
-    
+    @GetMapping("/{id}")
+    public Pago getPagoById(@PathVariable Long id){
+        return pagoService.getPagoById(id)
+        .orElseThrow(() -> new PagoNoEncontradoException(id));
+    }
 
 }
