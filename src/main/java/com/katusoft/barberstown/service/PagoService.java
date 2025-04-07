@@ -26,5 +26,9 @@ public class PagoService {
         return pagoRepository.findById(id);
     }
 
+    public Pago savePago(Pago pago){
+        return pagoRepository.save(pago);
+    }
+
 
 }
