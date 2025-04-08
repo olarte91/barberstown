@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.katusoft.barberstown.exception.PagoNoEncontradoException;
 import com.katusoft.barberstown.model.Pago;
 import com.katusoft.barberstown.repository.PagoRepository;
 
@@ -36,6 +37,14 @@ public class PagoService {
         }
         pagoRepository.deleteById(id);
         return true;
+    }
+
+    public Pago updatePago(Long id, Pago pago){
+        Pago pagoExistente = pagoRepository.findById(id)
+        .orElseThrow(() -> new PagoNoEncontradoException(id));
+        if(pago.getEstado() != null) pagoExistente.setEstado(pago.getEstado());
+
+        return pagoRepository.save(pagoExistente);
     }
 
 
