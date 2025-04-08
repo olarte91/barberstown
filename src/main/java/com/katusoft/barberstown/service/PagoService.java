@@ -30,5 +30,13 @@ public class PagoService {
         return pagoRepository.save(pago);
     }
 
+    public boolean deletePago(Long id){
+        if(!pagoRepository.existsById(id)){
+            return false;
+        }
+        pagoRepository.deleteById(id);
+        return true;
+    }
+
 
 }

@@ -9,6 +9,7 @@ import com.katusoft.barberstown.service.PagoService;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +39,14 @@ public class PagoController {
     @PostMapping
     public Pago savePago(@RequestBody Pago pago){
         return pagoService.savePago(pago);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deletePago(@PathVariable Long id){
+        if(pagoService.deletePago(id)){
+            return "Pago eliminado correctamente";
+        }
+        return "No se encontró el pago con el id: " + id;
     }
 
 }
