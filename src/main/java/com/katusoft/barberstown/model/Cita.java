@@ -3,6 +3,8 @@ package com.katusoft.barberstown.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.katusoft.barberstown.enums.EstadoCita;
 
 import jakarta.persistence.Column;
@@ -27,14 +29,17 @@ public class Cita {
 
     @ManyToOne
     @JoinColumn(name = "barbero_id")
+    @JsonIgnoreProperties({"citas"})
     private Barbero barbero;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
+    @JsonIgnoreProperties({"citas"})
     private Cliente cliente;
 
     @ManyToOne
     @JoinColumn(name = "servicio_id")
+    @JsonIgnoreProperties({"citas"})
     private Servicio servicio;
 
     @Column(nullable = false)

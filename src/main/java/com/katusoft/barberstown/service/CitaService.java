@@ -1,5 +1,7 @@
 package com.katusoft.barberstown.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.katusoft.barberstown.dto.CitaRequest;
@@ -50,6 +52,10 @@ public class CitaService {
         cita.setEstado(citaRequest.getEstado());
 
         return citaRepository.save(cita);
+    }
+
+    public List<Cita> obtenerCitas(){
+        return citaRepository.findAll();
     }
 
 }
