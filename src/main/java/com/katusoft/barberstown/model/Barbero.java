@@ -4,6 +4,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,6 +41,7 @@ public class Barbero {
     private LocalTime horaFin;
 
     @OneToMany(mappedBy = "barbero", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Cita> citas = new ArrayList<>();
 
     public Long getId() {
