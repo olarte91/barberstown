@@ -1,7 +1,6 @@
 package com.katusoft.barberstown.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,43 +16,48 @@ import org.springframework.web.bind.annotation.RestController;
 import com.katusoft.barberstown.model.MetodoPago;
 import com.katusoft.barberstown.service.MetodoPagoService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api/metodopago")
+@RequiredArgsConstructor
 public class MetodoPagoController {
 
     private final MetodoPagoService metodoPagoService;
 
-    public MetodoPagoController(MetodoPagoService metodoPagoService) {
-        this.metodoPagoService = metodoPagoService;
-    }
-
+    //Obtiene todos los métodos de pago
     @GetMapping()
-    public List<MetodoPago> getAllMetodosPago() {
-        return metodoPagoService.getAllMetodosPago();
+    public ResponseEntity<List<MetodoPago>> getAll(){
+        List<MetodoPago> metodosPago = metodoPagoService.getAll();
+        return ResponseEntity.ok(metodosPago);
     }
 
+    //Obtiene un método de pago por su ID
     @GetMapping("/{id}")
-    public Optional<MetodoPago> getMetodoPagoById(@PathVariable Long id) {
-        return metodoPagoService.getMetodoPagoById(id);
+    public ResponseEntity<MetodoPago> getById(@PathVariable Long id){
+        MetodoPago metodoPago = metodoPagoService.getById(id);
+        return ResponseEntity.ok(metodoPago);
     }
 
+    //Crea un nuevo método de pago
     @PostMapping()
-    public MetodoPago saveMetodoPago(@RequestBody MetodoPago metodoPago) {
-        return metodoPagoService.saveMetodoPago(metodoPago);
+    public ResponseEntity<MetodoPago> create(@RequestBody MetodoPago metodoPago){
+        MetodoPago nuevoMetodoPago = metodoPagoService.save(metodoPago);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoMetodoPago);
     }
 
+    //Elimina un método de pago por su ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteMetodoPagoById(@PathVariable Long id) {
-        if (!metodoPagoService.deleteMetodoDePagoById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Método de pago no encontrado");
-
-        }
-        return ResponseEntity.ok("Método de pago eliminado correctamente");
+    public ResponseEntity<Void> deleteById(@PathVariable Long id){
+        metodoPagoService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
+    //Actualiza un método de pago existente
     @PutMapping("/{id}")
-    public MetodoPago actualizarMetodoPago(@PathVariable Long id, @RequestBody MetodoPago metodoPago){
-        return metodoPagoService.actualizarMetodoPago(id, metodoPago);
+    public ResponseEntity<MetodoPago> updateById(@PathVariable Long id, @RequestBody MetodoPago metodoPago){
+        MetodoPago metodoPagoActualizado = metodoPagoService.update(id, metodoPago);
+        return ResponseEntity.ok(metodoPagoActualizado);
     }
 
 }
