@@ -1,46 +1,57 @@
 package com.katusoft.barberstown.service;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.katusoft.barberstown.exception.MetodoPagoNoEncontradoException;
 import com.katusoft.barberstown.model.MetodoPago;
 import com.katusoft.barberstown.repository.MetodoPagoRepository;
 
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class MetodoPagoService {
 
     private final MetodoPagoRepository metodoPagoRepository;
 
-    public MetodoPagoService(MetodoPagoRepository metodoPagoRepository){
-        this.metodoPagoRepository = metodoPagoRepository;
-    }
-
-    public List<MetodoPago> getAllMetodosPago (){
+    //Obtiene todos los métodos de pago
+    public List<MetodoPago> getAll() {
         return metodoPagoRepository.findAll();
     }
 
-    public Optional<MetodoPago> getMetodoPagoById(Long id){
-        return metodoPagoRepository.findById(id);
+    /*Obtiene un método de pago por su ID
+     * Se lanza una excepción si no existe
+     */
+    public MetodoPago getById(Long id) {
+        return metodoPagoRepository.findById(id)
+                .orElseThrow(() -> new MetodoPagoNoEncontradoException(id));
     }
 
-    public MetodoPago saveMetodoPago(MetodoPago metodoPago){
+    //Guarda un nuevo método de pago
+    public MetodoPago save(MetodoPago metodoPago) {
         return metodoPagoRepository.save(metodoPago);
     }
 
-    public boolean deleteMetodoDePagoById(Long id){
-        if(!metodoPagoRepository.existsById(id)){
-            return false;
+    /*Elimina un método de pago por su ID
+     * Se lanza una excepción si no existe
+     */
+    @Transactional
+    public void deleteById(Long id) {
+        try {
+            metodoPagoRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new MetodoPagoNoEncontradoException(id);
         }
-        metodoPagoRepository.deleteById(id);
-        return true;
     }
 
-    public MetodoPago actualizarMetodoPago(Long id, MetodoPago metodoPago){
+    //Actualiza un método de pago existente
+    public MetodoPago update(Long id, MetodoPago metodoPago) {
         MetodoPago metodoPagoExistente = metodoPagoRepository.findById(id)
-        .orElseThrow(() -> new MetodoPagoNoEncontradoException(id));
+                .orElseThrow(() -> new MetodoPagoNoEncontradoException(id));
 
         metodoPagoExistente.setNombre(metodoPago.getNombre());
 

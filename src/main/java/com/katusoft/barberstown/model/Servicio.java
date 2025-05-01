@@ -4,6 +4,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -40,6 +42,7 @@ public class Servicio {
     private double valor;
 
     @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Cita> citas = new ArrayList<>();
 
     public Long getId() {
