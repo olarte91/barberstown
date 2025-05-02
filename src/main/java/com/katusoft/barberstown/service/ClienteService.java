@@ -1,7 +1,7 @@
 package com.katusoft.barberstown.service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.function.Consumer;
 
 import org.springframework.stereotype.Service;
 
@@ -9,44 +9,48 @@ import com.katusoft.barberstown.exception.ClienteNoEncontradoException;
 import com.katusoft.barberstown.model.Cliente;
 import com.katusoft.barberstown.repository.ClienteRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
 
-    public ClienteService(ClienteRepository clienteRepository){
-        this.clienteRepository = clienteRepository;
-    }
-
-    public List<Cliente> getAllClientes(){
+    public List<Cliente> getAll(){
         return clienteRepository.findAll();
     }
 
-    public Cliente saveCliente(Cliente cliente){
+    public Cliente save(Cliente cliente){
         return clienteRepository.save(cliente);
     }
 
-    public Optional<Cliente> getClienteById(Long id){
-        return clienteRepository.findById(id);
+    public Cliente getById (Long id){
+        return clienteRepository.findById(id)
+            .orElseThrow(() -> new ClienteNoEncontradoException(id));
     }
 
-    public boolean deleteClienteById(Long id){
+    public void deleteById (Long id){
         if(!clienteRepository.existsById(id)){
-            return false;
+            throw new ClienteNoEncontradoException(id);
         }
         clienteRepository.deleteById(id);
-        return true;
     }
 
-    public Cliente actualizarCliente(Long id, Cliente clienteActualizado){
-        Cliente cliente = clienteRepository.findById(id)
-        .orElseThrow(() -> new ClienteNoEncontradoException(id));
+    public Cliente update(Long id, Cliente clienteActualizado){
+        Cliente cliente = getById(id);
 
-        if(clienteActualizado.getNombre() != null) cliente.setNombre(clienteActualizado.getNombre());
-        if(clienteActualizado.getApellido() != null) cliente.setApellido(clienteActualizado.getApellido());
-        if(clienteActualizado.getTelefono() != null) cliente.setTelefono(clienteActualizado.getTelefono());
-        if(clienteActualizado.getCorreo() != null) cliente.setCorreo(clienteActualizado.getCorreo());
+        actualizarCampoSiNoNulo(clienteActualizado.getNombre(), cliente::setNombre);
+        actualizarCampoSiNoNulo(clienteActualizado.getApellido(), cliente::setApellido);
+        actualizarCampoSiNoNulo(clienteActualizado.getTelefono(), cliente::setTelefono);
+        actualizarCampoSiNoNulo(clienteActualizado.getCorreo(), cliente::setCorreo);
 
         return clienteRepository.save(cliente);
+    }
+
+    private <T> void actualizarCampoSiNoNulo(T valor, Consumer<T> setter){
+        if(valor != null){
+            setter.accept(valor);
+        }
     }
 }

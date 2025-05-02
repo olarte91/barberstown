@@ -3,11 +3,13 @@ package com.katusoft.barberstown.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.katusoft.barberstown.exception.ClienteNoEncontradoException;
 import com.katusoft.barberstown.model.Cliente;
 import com.katusoft.barberstown.service.ClienteService;
 
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,43 +23,51 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/clientes")
+@RequiredArgsConstructor
 public class ClienteController {
+
     private final ClienteService clienteService;
 
-    public ClienteController(ClienteService clienteService){
-        this.clienteService = clienteService;
-    }
-
     @GetMapping
-    public List<Cliente> getClientes(){
-        return clienteService.getAllClientes();
+    public ResponseEntity<List<Cliente>> getAll(){
+        List<Cliente> clientes = clienteService.getAll();
+        return ResponseEntity.ok(clientes);
     }
 
     @PostMapping
-    public Cliente saveCliente(@RequestBody Cliente cliente){
-        return clienteService.saveCliente(cliente);
+    public ResponseEntity<Cliente> create(@RequestBody Cliente cliente){
+        Cliente nuevoCliente = clienteService.save(cliente);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoCliente);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> getClienteById(@PathVariable Long id){
-       Optional<Cliente> clienteOptional = clienteService.getClienteById(id);
-
-       return clienteOptional
-       .map(cliente -> ResponseEntity.ok(cliente))
-       .orElseGet(()-> ResponseEntity.notFound().build());
+    public ResponseEntity<Cliente> getById(@PathVariable Long id){
+       try{
+        Cliente cliente = clienteService.getById(id);
+        return ResponseEntity.ok(cliente);
+       } catch(ClienteNoEncontradoException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+       }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteClienteById(@PathVariable Long id){
-        if(!clienteService.deleteClienteById(id)){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado");
+    public ResponseEntity<String> deleteById(@PathVariable Long id){
+        try{
+            clienteService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch(ClienteNoEncontradoException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.ok("Cliente eliminado con éxito");
     }
 
     @PutMapping("/{id}")
-    public Cliente actualizarCliente(@PathVariable Long id, @RequestBody Cliente cliente ){
-        return clienteService.actualizarCliente(id, cliente);
+    public ResponseEntity<Cliente> update(@PathVariable Long id, @RequestBody Cliente cliente){
+        try{
+            Cliente clienteActualizado = clienteService.update(id, cliente);
+            return ResponseEntity.ok(clienteActualizado);
+        } catch(ClienteNoEncontradoException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
     
 
