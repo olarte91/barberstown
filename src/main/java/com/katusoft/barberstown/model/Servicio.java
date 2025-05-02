@@ -14,9 +14,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "servicios")
+@Data
+@NoArgsConstructor
 public class Servicio {
 
     @Id
@@ -25,14 +29,6 @@ public class Servicio {
 
     @Column(nullable = false)
     private String nombre;
-
-    public List<Cita> getCitas() {
-        return citas;
-    }
-
-    public void setCitas(List<Cita> citas) {
-        this.citas = citas;
-    }
 
     @Column
     private LocalTime duracion;
@@ -43,36 +39,4 @@ public class Servicio {
     @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Cita> citas = new ArrayList<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public LocalTime getDuracion() {
-        return duracion;
-    }
-
-    public void setDuracion(LocalTime duracion) {
-        this.duracion = duracion;
-    }
-
-    public double getValor() {
-        return valor;
-    }
-
-    public void setValor(double valor) {
-        this.valor = valor;
-    }
 }
