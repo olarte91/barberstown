@@ -13,43 +13,36 @@ import com.katusoft.barberstown.repository.BarberoRepository;
 import com.katusoft.barberstown.repository.CitaRepository;
 import com.katusoft.barberstown.repository.ClienteRepository;
 import com.katusoft.barberstown.repository.ServicioRepository;
+
+import lombok.RequiredArgsConstructor;
+
 import com.katusoft.barberstown.exception.BarberoNoEncontradoException;
 import com.katusoft.barberstown.exception.ClienteNoEncontradoException;
 import com.katusoft.barberstown.exception.ServicioNoEncontradoException;
 
 @Service
+@RequiredArgsConstructor
 public class CitaService {
     private final CitaRepository citaRepository;
     private final BarberoRepository barberoRepository;
     private final ClienteRepository clienteRepository;
     private final ServicioRepository servicioRepository;
 
-    public CitaService(CitaRepository citaRepository, BarberoRepository barberoRepository, ClienteRepository clienteRepository, ServicioRepository servicioRepository){
-        this.citaRepository = citaRepository;
-        this.barberoRepository = barberoRepository;
-        this.clienteRepository = clienteRepository;
-        this.servicioRepository = servicioRepository;
-    }
-
     //Crear una nueva cita
     public Cita crearCita(CitaRequest citaRequest){
-        Barbero barbero = barberoRepository.findById(citaRequest.getBarberoId())
-        .orElseThrow(() -> new BarberoNoEncontradoException(citaRequest.getBarberoId()));
+        Barbero barbero = getBarberById(citaRequest.getBarberoId());
+        Cliente cliente = getClientById(citaRequest.getClienteId());
+        Servicio servicio = getServiceById(citaRequest.getServicioId());
 
-        Cliente cliente = clienteRepository.findById(citaRequest.getClienteId())
-        .orElseThrow(() -> new ClienteNoEncontradoException(citaRequest.getClienteId()));
-
-        Servicio servicio = servicioRepository.findById(citaRequest.getServicioId())
-        .orElseThrow(() -> new ServicioNoEncontradoException(citaRequest.getServicioId()));
-
-        Cita cita = new Cita();
-        cita.setBarbero(barbero);
-        cita.setCliente(cliente);
-        cita.setServicio(servicio);
-        cita.setFecha(citaRequest.getFecha());
-        cita.setHora(citaRequest.getHora());
-        cita.setValor(citaRequest.getValor());
-        cita.setEstado(citaRequest.getEstado());
+        Cita cita = Cita.builder()
+            .barbero(barbero)
+            .cliente(cliente)
+            .servicio(servicio)
+            .fecha(citaRequest.getFecha())
+            .hora(citaRequest.getHora())
+            .valor(citaRequest.getValor())
+            .estado(citaRequest.getEstado())
+            .build();
 
         return citaRepository.save(cita);
     }
@@ -57,5 +50,24 @@ public class CitaService {
     public List<Cita> obtenerCitas(){
         return citaRepository.findAll();
     }
+
+    //Métodos privados para encapsular la lógica de obtención y manejo de excepciones
+
+    private Barbero getBarberById(Long id){
+        return barberoRepository.findById(id)
+            .orElseThrow(() -> new BarberoNoEncontradoException(id));
+    }
+
+    private Cliente getClientById(Long id){
+        return clienteRepository.findById(id)
+            .orElseThrow(() -> new ClienteNoEncontradoException(id));
+    }
+
+    private Servicio getServiceById(Long id){
+        return servicioRepository.findById(id)
+            .orElseThrow(() -> new ServicioNoEncontradoException(id));
+    }
+
+
 
 }
