@@ -1,55 +1,64 @@
 package com.katusoft.barberstown.service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.function.Consumer;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.katusoft.barberstown.exception.BarberoNoEncontradoException;
 import com.katusoft.barberstown.model.Barbero;
 import com.katusoft.barberstown.repository.BarberoRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class BarberoService {
 
     private final BarberoRepository barberoRepository;
 
-    public BarberoService(BarberoRepository barberoRepository){
-        this.barberoRepository = barberoRepository;
-    }
 
-    public List<Barbero> getAllBarberos(){
+    public List<Barbero> getAll(){
         return barberoRepository.findAll();
     }
 
-    public Barbero saveBarbero(Barbero barbero){
+    public Barbero save(Barbero barbero){
         return barberoRepository.save(barbero);
     }
 
-    public Optional<Barbero> getBarberoById(Long id){
-        return  barberoRepository.findById(id);
+    public Barbero getById(Long id){
+        return  barberoRepository.findById(id)
+            .orElseThrow(() -> new BarberoNoEncontradoException(id));
     }
 
-    public boolean deleteBarberoById(Long id){
-        if(!barberoRepository.existsById(id)){
-            return false;
+    public void deleteById(Long id){
+        try {
+            barberoRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            
         }
-        barberoRepository.deleteById(id);
-        return true;
+
     }
 
-    public Barbero actualizarBarbero(Long id, Barbero datosActualizados){
+    public Barbero update(Long id, Barbero datosActualizados){
         Barbero barbero = barberoRepository.findById(id)
             .orElseThrow(() -> new BarberoNoEncontradoException(id));
 
-        if(datosActualizados.getNombre() != null) barbero.setNombre(datosActualizados.getNombre());
-        if(datosActualizados.getApellido() != null) barbero.setApellido(datosActualizados.getApellido());
-        if(datosActualizados.getCorreo() != null) barbero.setCorreo(datosActualizados.getCorreo());
-        if(datosActualizados.getTelefono() != null) barbero.setTelefono(datosActualizados.getTelefono());
-        if(datosActualizados.getHoraInicio() != null) barbero.setHoraInicio(datosActualizados.getHoraInicio());
-        if(datosActualizados.getHoraFin() != null) barbero.setHoraFin(datosActualizados.getHoraFin());
+        actualizarCampoSiNoNulo(datosActualizados.getNombre(), barbero::setNombre);
+        actualizarCampoSiNoNulo(datosActualizados.getApellido(), barbero::setApellido);
+        actualizarCampoSiNoNulo(datosActualizados.getCorreo(), barbero::setCorreo);
+        actualizarCampoSiNoNulo(datosActualizados.getTelefono(), barbero::setTelefono);
+        actualizarCampoSiNoNulo(datosActualizados.getHoraInicio(), barbero::setHoraInicio);
+        actualizarCampoSiNoNulo(datosActualizados.getHoraFin(), barbero::setHoraFin);
 
         return barberoRepository.save(barbero);
     }
-
+    
+    private <T> void actualizarCampoSiNoNulo(T valor, Consumer<T> setter){
+        if(valor != null){
+            setter.accept(valor);
+        }
+    }
+    
 }
