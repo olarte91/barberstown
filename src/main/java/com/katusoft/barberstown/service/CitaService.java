@@ -23,10 +23,11 @@ import com.katusoft.barberstown.exception.ServicioNoEncontradoException;
 @Service
 @RequiredArgsConstructor
 public class CitaService {
-    private final CitaRepository citaRepository;
-    private final BarberoRepository barberoRepository;
-    private final ClienteRepository clienteRepository;
-    private final ServicioRepository servicioRepository;
+    private  final CitaRepository citaRepository;
+    private  final BarberoRepository barberoRepository;
+    private  final ClienteRepository clienteRepository;
+    private  final ServicioRepository servicioRepository;
+
 
     //Crear una nueva cita
     public Cita crearCita(CitaRequest citaRequest){

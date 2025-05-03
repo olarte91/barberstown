@@ -21,12 +21,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+
 @Entity
 @Table(name = "citas")
 @Data
 @AllArgsConstructor
 @Builder
 public class Cita {
+
+    public Cita(){
+        
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
