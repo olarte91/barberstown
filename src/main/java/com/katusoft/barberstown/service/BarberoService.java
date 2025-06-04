@@ -49,8 +49,7 @@ public class BarberoService {
         actualizarCampoSiNoNulo(datosActualizados.getApellido(), barbero::setApellido);
         actualizarCampoSiNoNulo(datosActualizados.getCorreo(), barbero::setCorreo);
         actualizarCampoSiNoNulo(datosActualizados.getTelefono(), barbero::setTelefono);
-        actualizarCampoSiNoNulo(datosActualizados.getHoraInicio(), barbero::setHoraInicio);
-        actualizarCampoSiNoNulo(datosActualizados.getHoraFin(), barbero::setHoraFin);
+        actualizarCampoSiNoNulo(datosActualizados.getImagen(), barbero::setImagen);
 
         return barberoRepository.save(barbero);
     }

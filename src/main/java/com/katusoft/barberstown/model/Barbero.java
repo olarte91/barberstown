@@ -39,10 +39,7 @@ public class Barbero {
     private String correo;
 
     @Column
-    private LocalTime horaInicio;
-
-    @Column
-    private LocalTime horaFin;
+    private String imagen;
 
     @OneToMany(mappedBy = "barbero", cascade = CascadeType.ALL)
     @JsonIgnore
