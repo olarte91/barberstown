@@ -3,7 +3,10 @@ package com.katusoft.barberstown.controller;
 import java.util.List;
 import java.util.UUID;
 
+import com.katusoft.barberstown.dto.BarberoRequest;
+import com.katusoft.barberstown.dto.BarberoResponse;
 import com.katusoft.barberstown.exception.BarberoNoEncontradoException;
+import com.katusoft.barberstown.utils.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,15 +33,17 @@ public class BarberoController {
     private final BarberoService barberoService;
 
     @GetMapping
-    public ResponseEntity<List<Barbero>> getAll(){
-        List<Barbero> barberos = barberoService.getAll();
-        return ResponseEntity.ok(barberos);
+    public ResponseEntity<ApiResponse<List<BarberoResponse>>> getAll(){
+        List<BarberoResponse> allBarbers = barberoService.getAll();
+        ApiResponse<List<BarberoResponse>> response =
+        ApiResponse.success("Barberos obtenidos exitosamente", allBarbers);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
-    public ResponseEntity<Barbero> create(@RequestBody Barbero barbero){
-        Barbero nuevoBarbero = barberoService.save(barbero);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoBarbero);
+    public ResponseEntity<ApiResponse<BarberoResponse>> create(@RequestBody BarberoRequest request){
+        BarberoResponse nuevoBarbero = barberoService.save(request);
+        return ResponseEntity.ok(ApiResponse.success("Barbero creado con éxito", nuevoBarbero));
     }
 
     @GetMapping("/{id}")
