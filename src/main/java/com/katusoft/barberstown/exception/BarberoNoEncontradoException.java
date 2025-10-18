@@ -1,8 +1,7 @@
 package com.katusoft.barberstown.exception;
 
-public class BarberoNoEncontradoException extends RuntimeException{
-
-    public BarberoNoEncontradoException(Long id){
-        super("Barbero no encontrado con id: " + id);
-    }
+public class BarberoNoEncontradoException extends RuntimeException {
+  public BarberoNoEncontradoException(String message) {
+    super(message);
+  }
 }

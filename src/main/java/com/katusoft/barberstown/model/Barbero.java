@@ -3,6 +3,7 @@ package com.katusoft.barberstown.model;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -23,8 +24,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Barbero {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(nullable = false)
     private String nombre;
@@ -41,7 +42,4 @@ public class Barbero {
     @Column
     private String imagen;
 
-    @OneToMany(mappedBy = "barbero", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Cita> citas = new ArrayList<>();
 }

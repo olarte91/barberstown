@@ -1,7 +1,9 @@
 package com.katusoft.barberstown.controller;
 
 import java.util.List;
+import java.util.UUID;
 
+import com.katusoft.barberstown.exception.BarberoNoEncontradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.katusoft.barberstown.exception.BarberoNoEncontradoException;
 import com.katusoft.barberstown.model.Barbero;
 import com.katusoft.barberstown.service.BarberoService;
 
@@ -41,7 +42,7 @@ public class BarberoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Barbero> getById(@PathVariable Long id) {
+    public ResponseEntity<Barbero> getById(@PathVariable UUID id) {
         try {
             Barbero barbero = barberoService.getById(id);
             return ResponseEntity.ok(barbero);
@@ -51,7 +52,7 @@ public class BarberoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteBarberoById(@PathVariable Long id){
+    public ResponseEntity<String> deleteBarberoById(@PathVariable UUID id){
         try {
             barberoService.deleteById(id);
             return ResponseEntity.noContent().build();
@@ -61,7 +62,7 @@ public class BarberoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Barbero> update(@PathVariable Long id, @RequestBody Barbero barbero){
+    public ResponseEntity<Barbero> update(@PathVariable UUID id, @RequestBody Barbero barbero){
         try{
             Barbero barberoActualizado = barberoService.update(id, barbero);
             return ResponseEntity.ok(barberoActualizado);

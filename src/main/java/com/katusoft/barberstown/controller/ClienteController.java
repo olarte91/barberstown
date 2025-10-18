@@ -1,15 +1,16 @@
 package com.katusoft.barberstown.controller;
 
+import com.katusoft.barberstown.exception.ClienteNoEncontradoException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.katusoft.barberstown.exception.ClienteNoEncontradoException;
 import com.katusoft.barberstown.model.Cliente;
 import com.katusoft.barberstown.service.ClienteService;
 
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> getById(@PathVariable Long id){
+    public ResponseEntity<Cliente> getById(@PathVariable UUID id){
        try{
         Cliente cliente = clienteService.getById(id);
         return ResponseEntity.ok(cliente);
@@ -51,7 +52,7 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable Long id){
+    public ResponseEntity<String> deleteById(@PathVariable UUID id){
         try{
             clienteService.deleteById(id);
             return ResponseEntity.noContent().build();
@@ -61,7 +62,7 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> update(@PathVariable Long id, @RequestBody Cliente cliente){
+    public ResponseEntity<Cliente> update(@PathVariable UUID id, @RequestBody Cliente cliente){
         try{
             Cliente clienteActualizado = clienteService.update(id, cliente);
             return ResponseEntity.ok(clienteActualizado);

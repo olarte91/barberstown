@@ -2,6 +2,7 @@ package com.katusoft.barberstown.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class ServicioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Servicio> getServicioById(@PathVariable Long id){
+    public ResponseEntity<Servicio> getServicioById(@PathVariable UUID id){
         Optional<Servicio> servicioOptional = servicioService.getServicioById(id);
 
         return servicioOptional
@@ -47,16 +48,16 @@ public class ServicioController {
 
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteServicioById(@PathVariable Long id){
-        if(!servicioService.deleteServicioById(id)){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.ok("Servicio eliminado correctamente");
-    }
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<String> deleteServicioById(@PathVariable Long id){
+//        if(!servicioService.deleteServicioById(id)){
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        }
+//        return ResponseEntity.ok("Servicio eliminado correctamente");
+//    }
 
-    @PutMapping("/{id}")
-    public Servicio actualizarServicio(@PathVariable Long id, @RequestBody Servicio servicio){
-        return servicioService.actualizarServicio(id, servicio);
-    }
+//    @PutMapping("/{id}")
+//    public Servicio actualizarServicio(@PathVariable Long id, @RequestBody Servicio servicio){
+//        return servicioService.actualizarServicio(id, servicio);
+//    }
 }

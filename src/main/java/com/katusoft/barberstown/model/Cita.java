@@ -1,9 +1,8 @@
 package com.katusoft.barberstown.model;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.katusoft.barberstown.enums.EstadoCita;
 
 import jakarta.persistence.Column;
@@ -15,56 +14,47 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Entity
 @Table(name = "citas")
-@Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Builder
 public class Cita {
 
-    public Cita(){
-        
-    }
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "barbero_id")
-    @JsonIgnoreProperties({"citas"})
     private Barbero barbero;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    @JsonIgnoreProperties({"citas"})
     private Cliente cliente;
 
     @ManyToOne
     @JoinColumn(name = "servicio_id")
-    @JsonIgnoreProperties({"citas"})
     private Servicio servicio;
 
-    @Column(nullable = false)
-    private LocalDate fecha;
-
-    @Column(nullable = false)
-    private LocalTime hora;
+    @Column(nullable = false, name = "fecha_hora")
+    private LocalDateTime fechaHora;
 
     @Enumerated(EnumType.STRING)
-    @Column
+    @Column(nullable = false, name = "estado_cita")
     private EstadoCita estado;
 
     @Column(nullable = false)
     private double valor;
 
-    @OneToOne(mappedBy = "cita")
-    private Pago pago;
 }

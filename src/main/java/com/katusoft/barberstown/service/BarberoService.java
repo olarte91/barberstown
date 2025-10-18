@@ -1,12 +1,13 @@
 package com.katusoft.barberstown.service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 
+import com.katusoft.barberstown.exception.BarberoNoEncontradoException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.katusoft.barberstown.exception.BarberoNoEncontradoException;
 import com.katusoft.barberstown.model.Barbero;
 import com.katusoft.barberstown.repository.BarberoRepository;
 
@@ -27,12 +28,12 @@ public class BarberoService {
         return barberoRepository.save(barbero);
     }
 
-    public Barbero getById(Long id){
+    public Barbero getById(UUID id){
         return  barberoRepository.findById(id)
-            .orElseThrow(() -> new BarberoNoEncontradoException(id));
+            .orElseThrow(() -> new BarberoNoEncontradoException("Barbero no econtrado"));
     }
 
-    public void deleteById(Long id){
+    public void deleteById(UUID id){
         try {
             barberoRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
@@ -41,9 +42,9 @@ public class BarberoService {
 
     }
 
-    public Barbero update(Long id, Barbero datosActualizados){
+    public Barbero update(UUID id, Barbero datosActualizados){
         Barbero barbero = barberoRepository.findById(id)
-            .orElseThrow(() -> new BarberoNoEncontradoException(id));
+            .orElseThrow(() -> new BarberoNoEncontradoException("Barbero no encontrado"));
 
         actualizarCampoSiNoNulo(datosActualizados.getNombre(), barbero::setNombre);
         actualizarCampoSiNoNulo(datosActualizados.getApellido(), barbero::setApellido);
