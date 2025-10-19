@@ -25,32 +25,33 @@ import lombok.Setter;
 @Table(name = "barberos")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Barbero {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
   @Column(nullable = false)
-  private String nombre;
+  private String name;
 
   @Column(nullable = false)
-  private String apellido;
+  private String lastname;
 
   @Column
-  private String telefono;
+  private String phone;
 
   @Column
-  private String correo;
+  private String email;
 
   @Column
-  private String imagen;
+  private String image;
 
   public Barbero(String nombre, String apellido, String telefono, String correo, String imagen) {
-    this.nombre = nombre;
-    this.apellido = apellido;
-    this.telefono = telefono;
-    this.correo = correo;
-    this.imagen = imagen;
+    this.name = nombre;
+    this.lastname = apellido;
+    this.phone = telefono;
+    this.email = correo;
+    this.image = imagen;
   }
 
 }

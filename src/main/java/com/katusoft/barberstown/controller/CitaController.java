@@ -3,8 +3,7 @@ package com.katusoft.barberstown.controller;
 import java.util.List;
 
 import com.katusoft.barberstown.dto.CitaResponse;
-import com.katusoft.barberstown.mapper.EntityToCitaResponse;
-import org.springframework.http.HttpStatus;
+import com.katusoft.barberstown.utils.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,9 +25,9 @@ public class CitaController {
     private final CitaService citaService;
 
     @PostMapping
-    public ResponseEntity<CitaResponse> crearCita(@RequestBody CitaRequest citaRequest){
-        Cita cita = citaService.crearCita(citaRequest);
-        return ResponseEntity.ok(EntityToCitaResponse.toCitaResponse(cita));
+    public ResponseEntity<ApiResponse<CitaResponse>> crearCita(@RequestBody CitaRequest citaRequest){
+        CitaResponse cita = citaService.crearCita(citaRequest);
+        return ResponseEntity.ok(ApiResponse.success("Cita creada correctamente", cita));
     }
 
     @GetMapping

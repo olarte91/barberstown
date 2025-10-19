@@ -3,6 +3,7 @@ package com.katusoft.barberstown.service;
 import java.util.List;
 
 import com.katusoft.barberstown.dto.CitaRequest;
+import com.katusoft.barberstown.dto.CitaResponse;
 import com.katusoft.barberstown.exception.BarberoNoEncontradoException;
 import com.katusoft.barberstown.exception.ServicioNoEncontradoException;
 import com.katusoft.barberstown.model.Cliente;
@@ -28,7 +29,7 @@ public class CitaService {
 
 
     //Crear una nueva cita
-    public Cita crearCita(CitaRequest citaRequest){
+    public CitaResponse crearCita(CitaRequest citaRequest){
 
       Barbero barbero = barberoRepository.findById(citaRequest.getBarberoId())
           .orElseThrow( () -> new BarberoNoEncontradoException("No se encontró el barbero"));
@@ -48,11 +49,24 @@ public class CitaService {
             .estado(citaRequest.getEstado())
             .build();
 
-        return citaRepository.save(nuevaCita);
+      citaRepository.save(nuevaCita);
+
+        return this.toDto(nuevaCita);
     }
 
     public List<Cita> obtenerCitas(){
         return citaRepository.findAll();
     }
+
+  private CitaResponse toDto(Cita cita){
+    return new CitaResponse().builder()
+        .barbero(cita.getBarbero())
+        .cliente(cita.getCliente())
+        .servicio(cita.getServicio())
+        .valor(cita.getValor())
+        .fechaHora(cita.getFechaHora())
+        .estadoCita(cita.getEstado())
+        .build();
+  }
 
 }

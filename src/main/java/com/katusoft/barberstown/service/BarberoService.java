@@ -32,6 +32,9 @@ public class BarberoService {
     if(barberoRequest == null){
       throw new BarberoNoEncontradoException("No ha proporcionado datos del barbero");
     }
+    if(barberoRepository.existsByEmail(barberoRequest.getEmail())){
+      throw new BarberoNoEncontradoException("El barbero con el email: " +  barberoRequest.getEmail() + " ya existe!");
+    }
     Barbero barbero =  barberoRepository.save(this.convertToEntity(barberoRequest));
 
     return convertToDto(barbero);
@@ -55,11 +58,11 @@ public class BarberoService {
     Barbero barbero = barberoRepository.findById(id)
         .orElseThrow(() -> new BarberoNoEncontradoException("Barbero no encontrado"));
 
-    actualizarCampoSiNoNulo(datosActualizados.getNombre(), barbero::setNombre);
-    actualizarCampoSiNoNulo(datosActualizados.getApellido(), barbero::setApellido);
-    actualizarCampoSiNoNulo(datosActualizados.getCorreo(), barbero::setCorreo);
-    actualizarCampoSiNoNulo(datosActualizados.getTelefono(), barbero::setTelefono);
-    actualizarCampoSiNoNulo(datosActualizados.getImagen(), barbero::setImagen);
+    actualizarCampoSiNoNulo(datosActualizados.getName(), barbero::setName);
+    actualizarCampoSiNoNulo(datosActualizados.getLastname(), barbero::setLastname);
+    actualizarCampoSiNoNulo(datosActualizados.getEmail(), barbero::setEmail);
+    actualizarCampoSiNoNulo(datosActualizados.getPhone(), barbero::setPhone);
+    actualizarCampoSiNoNulo(datosActualizados.getImage(), barbero::setImage);
 
     return barberoRepository.save(barbero);
   }
@@ -73,11 +76,11 @@ public class BarberoService {
   private BarberoResponse convertToDto(Barbero barbero) {
     return new BarberoResponse(
         barbero.getId(),
-        barbero.getNombre(),
-        barbero.getApellido(),
-        barbero.getCorreo(),
-        barbero.getTelefono(),
-        barbero.getImagen()
+        barbero.getName(),
+        barbero.getLastname(),
+        barbero.getEmail(),
+        barbero.getPhone(),
+        barbero.getImage()
     );
   }
 
@@ -85,8 +88,8 @@ public class BarberoService {
     return new Barbero(
         barberoRequest.getName(),
         barberoRequest.getLastname(),
-        barberoRequest.getEmail(),
         barberoRequest.getPhone(),
+        barberoRequest.getEmail(),
         barberoRequest.getImage()
     );
   }

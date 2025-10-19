@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface BarberoRepository extends JpaRepository<Barbero, UUID>{
 
+  boolean existsByEmail(String email);
 }

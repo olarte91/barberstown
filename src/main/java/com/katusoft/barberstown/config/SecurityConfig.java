@@ -22,7 +22,7 @@ public class SecurityConfig {
         http
         .authorizeHttpRequests((authorize) -> authorize
         .requestMatchers(HttpMethod.GET, "/api/barberos").permitAll()
-        .requestMatchers(HttpMethod.POST, "/api/barberos").permitAll()
+        .requestMatchers(HttpMethod.POST, "/api/barberos/**").permitAll()
         .requestMatchers(HttpMethod.GET, "/api/clientes").permitAll())
         .csrf(AbstractHttpConfigurer::disable)
         .cors(cors -> cors.configurationSource(corsConfigurationSource()));
