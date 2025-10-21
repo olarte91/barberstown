@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Authresponse {
+public class AuthResponse {
 
   private String token;
   private String message;
@@ -14,7 +14,7 @@ public class Authresponse {
     this.token = token;
   }
 
-  public Authresponse(String token, String message){
+  public AuthResponse(String token, String message){
     this.token = token;
     this.message = message;
   }
