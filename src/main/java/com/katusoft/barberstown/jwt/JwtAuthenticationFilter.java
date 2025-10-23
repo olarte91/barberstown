@@ -36,40 +36,46 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     final String authHeader = request.getHeader("Authorization");
 
     //Verificar si tiene el formato "Bearer token"
-    if(authHeader == null || !authHeader.startsWith("Bearer ")){
+    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
       filterChain.doFilter(request, response);
       return;
     }
 
-    //Extraer el token (quitar "Bearer )
-    final String jwt = authHeader.substring(7);
-    final String userEmail = jwtService.extractUsername(jwt);
+    try {
+      //Extraer el token (quitar "Bearer )
+      final String jwt = authHeader.substring(7);
+      final String userEmail = jwtService.extractUsername(jwt);
 
-    //Si hay usuario y no está autenticado aún
-    if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-      //Cargar el usuario de la base de datos
-      UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
+      //Si hay usuario y no está autenticado aún
+      if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        //Cargar el usuario de la base de datos
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
 
-      //Validar el token
-      if (jwtService.isTokenValid(jwt, userDetails)) {
-        //Crear el token de autenticación
-        UsernamePasswordAuthenticationToken authToken =
-            new UsernamePasswordAuthenticationToken(
-                userDetails,
-                null,
-                userDetails.getAuthorities()
-            );
+        //Validar el token
+        if (jwtService.isTokenValid(jwt, userDetails)) {
+          //Crear el token de autenticación
+          UsernamePasswordAuthenticationToken authToken =
+              new UsernamePasswordAuthenticationToken(
+                  userDetails,
+                  null,
+                  userDetails.getAuthorities()
+              );
 
-        authToken.setDetails(
-            new WebAuthenticationDetailsSource().buildDetails(request)
-        );
+          authToken.setDetails(
+              new WebAuthenticationDetailsSource().buildDetails(request)
+          );
 
-        //Establece la autenticación en el contexto de Spring Security
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+          //Establece la autenticación en el contexto de Spring Security
+          SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
       }
-    }
 
-    //Continuar con la cadena de filtros
-    filterChain.doFilter(request, response);
+      //Continuar con la cadena de filtros
+      filterChain.doFilter(request, response);
+    } catch (Exception ex) {
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      response.setContentType("application/json");
+      response.getWriter().write("{\"error\": \"Token inválido o expirado\"}");
+    }
   }
 }
