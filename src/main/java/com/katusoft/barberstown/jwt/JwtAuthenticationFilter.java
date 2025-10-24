@@ -41,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       return;
     }
 
-    try {
+
       //Extraer el token (quitar "Bearer )
       final String jwt = authHeader.substring(7);
       final String userEmail = jwtService.extractUsername(jwt);
@@ -72,10 +72,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
       //Continuar con la cadena de filtros
       filterChain.doFilter(request, response);
-    } catch (Exception ex) {
-      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-      response.setContentType("application/json");
-      response.getWriter().write("{\"error\": \"Token inválido o expirado\"}");
-    }
+
   }
 }
