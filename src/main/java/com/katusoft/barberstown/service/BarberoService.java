@@ -1,6 +1,7 @@
 package com.katusoft.barberstown.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -50,13 +51,12 @@ public class BarberoService {
 
   }
 
-  public void deleteById(UUID id) {
-    try {
-      barberoRepository.deleteById(id);
-    } catch (EmptyResultDataAccessException e) {
+  public BarberoResponse deleteById(UUID id) {
+    Barbero barbero = barberoRepository.findById(id)
+        .orElseThrow(() -> new BarberoNoEncontradoException("Barbero no encontrado con id: " + id));
 
-    }
-
+    barberoRepository.delete(barbero);
+    return convertToDto(barbero);
   }
 
   public Barbero update(UUID id, Barbero datosActualizados) {

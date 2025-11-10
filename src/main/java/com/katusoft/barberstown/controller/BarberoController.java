@@ -31,50 +31,47 @@ import lombok.RequiredArgsConstructor;
 public class BarberoController {
 
 
-    private final BarberoService barberoService;
+  private final BarberoService barberoService;
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping
-    public ResponseEntity<ApiResponse<List<BarberoResponse>>> getAll(){
-        List<BarberoResponse> allBarbers = barberoService.getAll();
-        ApiResponse<List<BarberoResponse>> response =
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping
+  public ResponseEntity<ApiResponse<List<BarberoResponse>>> getAll() {
+    List<BarberoResponse> allBarbers = barberoService.getAll();
+    ApiResponse<List<BarberoResponse>> response =
         ApiResponse.success("Barberos obtenidos exitosamente", allBarbers);
-        return ResponseEntity.ok(response);
-    }
+    return ResponseEntity.ok(response);
+  }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
-    public ResponseEntity<ApiResponse<BarberoResponse>> create(@RequestBody BarberoRequest request){
-        BarberoResponse nuevoBarbero = barberoService.save(request);
-        return ResponseEntity.ok(ApiResponse.success("Barbero creado con éxito", nuevoBarbero));
-    }
+  @PreAuthorize("hasRole('ADMIN')")
+  @PostMapping
+  public ResponseEntity<ApiResponse<BarberoResponse>> create(@RequestBody BarberoRequest request) {
+    BarberoResponse nuevoBarbero = barberoService.save(request);
+    return ResponseEntity.ok(ApiResponse.success("Barbero creado con éxito", nuevoBarbero));
+  }
 
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/{id}")
-  public ResponseEntity<ApiResponse<BarberoResponse>> getById(@PathVariable UUID id){
-      BarberoResponse barbero = barberoService.getById(id);
-      return ResponseEntity.ok(ApiResponse.success("Barbero encontrado con éxito",  barbero));
+  public ResponseEntity<ApiResponse<BarberoResponse>> getById(@PathVariable UUID id) {
+    BarberoResponse barbero = barberoService.getById(id);
+    return ResponseEntity.ok(ApiResponse.success("Barbero encontrado con éxito", barbero));
   }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteBarberoById(@PathVariable UUID id){
-        try {
-            barberoService.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } catch (BarberoNoEncontradoException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
+  @PreAuthorize("hasRole('ADMIN')")
+  @DeleteMapping("/{id}")
+  public ResponseEntity<ApiResponse<BarberoResponse>> deleteBarberById(@PathVariable UUID id) {
+    BarberoResponse barbero = barberoService.deleteById(id);
+    return ResponseEntity.ok(ApiResponse.success("Barbero eliminado con éxito", barbero));
+  }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Barbero> update(@PathVariable UUID id, @RequestBody Barbero barbero){
-        try{
-            Barbero barberoActualizado = barberoService.update(id, barbero);
-            return ResponseEntity.ok(barberoActualizado);
-        }catch(BarberoNoEncontradoException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+  @PutMapping("/{id}")
+  public ResponseEntity<Barbero> update(@PathVariable UUID id, @RequestBody Barbero barbero) {
+    try {
+      Barbero barberoActualizado = barberoService.update(id, barbero);
+      return ResponseEntity.ok(barberoActualizado);
+    } catch (BarberoNoEncontradoException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+  }
 
 
 }
