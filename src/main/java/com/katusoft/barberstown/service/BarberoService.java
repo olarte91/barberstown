@@ -40,9 +40,14 @@ public class BarberoService {
     return convertToDto(barbero);
   }
 
-  public Barbero getById(UUID id) {
-    return barberoRepository.findById(id)
-        .orElseThrow(() -> new BarberoNoEncontradoException("Barbero no econtrado"));
+  public BarberoResponse getById(UUID id) {
+    Barbero barbero = barberoRepository.findById(id)
+        .orElseThrow(() -> new BarberoNoEncontradoException("El barbero con el id " + id + " no existe!"));
+
+    BarberoResponse Dto = convertToDto(barbero);
+
+    return Dto;
+
   }
 
   public void deleteById(UUID id) {
