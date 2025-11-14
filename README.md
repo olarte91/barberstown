@@ -1,6 +1,6 @@
 # Barberstown (Backend)
 
-Barberstown es el backend de un sistema de gestión de citas para barberías, desarrollado con Spring Boot.
+Barberstown es el backend de un sistema de gestión de appointments para barberías, desarrollado con Spring Boot.
 
 ## Tabla de Contenidos
 
@@ -15,12 +15,12 @@ Barberstown es el backend de un sistema de gestión de citas para barberías, de
 
 ## Descripción
 
-Este proyecto proporciona una API REST para gestionar clientes, citas y otros recursos relacionados con la operación de una barbería.
+Este proyecto proporciona una API REST para gestionar customers, appointments y otros recursos relacionados con la operación de una barbería.
 
 ## Características
 
-- **Gestión de citas:** Creación, modificación y cancelación de citas.
-- **Gestión de clientes:** Registro y consulta de información de clientes.
+- **Gestión de appointments:** Creación, modificación y cancelación de appointments.
+- **Gestión de customers:** Registro y consulta de información de customers.
 - **Autenticación y autorización:** (Opcional, ajusta según tu implementación)
 - **Validación de datos:** Validación de formularios y datos de entrada.
 - **Integración con frontend:** Soporte para CORS y comunicación con aplicaciones frontend[1].
@@ -50,18 +50,18 @@ cd barberstown
 
 ## Uso
 
-El backend está diseñado para ser consumido por una aplicación frontend (por ejemplo, Angular[1]). Proporciona endpoints REST para gestionar clientes, citas y otros recursos.
+El backend está diseñado para ser consumido por una aplicación frontend (por ejemplo, Angular[1]). Proporciona endpoints REST para gestionar customers, appointments y otros recursos.
 
 ## Endpoints
 
 *(Añade aquí los endpoints principales de tu API, por ejemplo:)*
 
 - **GET /api/barberos**  - Lista todos los barberos
--**POST /api/barberos** - Crea un nuevo barbero 
-- **GET /api/citas** – Lista todas las citas
-- **POST /api/citas** – Crea una nueva cita
-- **GET /api/clientes** – Lista todos los clientes
-- **POST /api/clientes** – Crea un nuevo cliente
+-**POST /api/barberos** - Crea un nuevo barber 
+- **GET /api/appointments** – Lista todas las appointments
+- **POST /api/appointments** – Crea una nueva appointment
+- **GET /api/customers** – Lista todos los customers
+- **POST /api/customers** – Crea un nuevo customer
 
 
 

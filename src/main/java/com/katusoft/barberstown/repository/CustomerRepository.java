@@ -1,10 +1,10 @@
 package com.katusoft.barberstown.repository;
 
-import com.katusoft.barberstown.model.Service;
+import com.katusoft.barberstown.model.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface ServicioRepository extends JpaRepository<Service, UUID>{
+public interface CustomerRepository extends JpaRepository<Customer, UUID>{
 
 }

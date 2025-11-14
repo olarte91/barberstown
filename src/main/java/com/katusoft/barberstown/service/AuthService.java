@@ -3,6 +3,8 @@ package com.katusoft.barberstown.service;
 import com.katusoft.barberstown.dto.AuthResponse;
 import com.katusoft.barberstown.dto.LoginRequest;
 import com.katusoft.barberstown.dto.RegisterRequest;
+import com.katusoft.barberstown.enums.UserStatus;
+import com.katusoft.barberstown.enums.UserType;
 import com.katusoft.barberstown.exception.UserAlreadyExistsException;
 import com.katusoft.barberstown.exception.UserEmailNotFoundException;
 import com.katusoft.barberstown.jwt.JwtService;
@@ -20,10 +22,16 @@ public class AuthService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
+  private final BarberService barberService;
+  private final CustomerService customerService;
 
   public AuthResponse register(RegisterRequest request) {
     if(userRepository.existsByEmail(request.getEmail())) {
       throw new UserAlreadyExistsException("El email " + request.getEmail() + " ya está registrado");
+    }
+
+    if(userRepository.existsByUsername(request.getUsername())) {
+      throw new UserAlreadyExistsException("El username " + request.getUsername() + " ya existe");
     }
 
     User user = User.builder()
@@ -31,9 +39,17 @@ public class AuthService {
         .password(passwordEncoder.encode(request.getPassword()))
         .username(request.getUsername())
         .role(request.getRole())
+        .userType(request.getUserType())
+        .userStatus(UserStatus.ACTIVE)
         .build();
 
     userRepository.save(user);
+
+    if(request.getUserType().equals(UserType.BARBER)){
+      barberService.createBarberProfile(user, request);
+    }else if(request.getUserType().equals(UserType.CUSTOMER)){
+      customerService.createCustomerProfile(user, request);
+    }
 
     String token = jwtService.generateToken(user);
 
@@ -52,4 +68,6 @@ public class AuthService {
 
     return new AuthResponse(token, "Login exitoso");
   }
+
+
 }

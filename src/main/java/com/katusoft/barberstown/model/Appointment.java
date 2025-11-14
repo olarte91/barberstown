@@ -29,7 +29,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class Cita {
+public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -37,15 +37,15 @@ public class Cita {
 
     @ManyToOne
     @JoinColumn(name = "barbero_id")
-    private Barbero barbero;
+    private Barber barber;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+    private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "servicio_id")
-    private Servicio servicio;
+    private Service service;
 
     @Column(nullable = false, name = "fecha_hora")
     private LocalDateTime fechaHora;

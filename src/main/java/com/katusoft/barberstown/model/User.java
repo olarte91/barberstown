@@ -1,12 +1,16 @@
 package com.katusoft.barberstown.model;
 
 import com.katusoft.barberstown.enums.Role;
+import com.katusoft.barberstown.enums.UserStatus;
+import com.katusoft.barberstown.enums.UserType;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,12 +43,17 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  public User(String email, String password, String username, Role role){
-    this.username = username;
-    this.email = email;
-    this.password = password;
-    this.role = role;
-  }
+  @Enumerated(EnumType.STRING)
+  private UserType userType;
+
+  @Enumerated(EnumType.STRING)
+  private UserStatus userStatus;
+
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Barber barber;
+
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Customer customer;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

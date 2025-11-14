@@ -12,28 +12,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.katusoft.barberstown.dto.CitaRequest;
-import com.katusoft.barberstown.model.Cita;
-import com.katusoft.barberstown.service.CitaService;
+import com.katusoft.barberstown.model.Appointment;
+import com.katusoft.barberstown.service.AppointmentService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/citas")
 @RequiredArgsConstructor
-public class CitaController {
+public class AppointmentController {
 
-    private final CitaService citaService;
+    private final AppointmentService appointmentService;
 
     @PostMapping
     public ResponseEntity<ApiResponse<CitaResponse>> crearCita(@RequestBody CitaRequest citaRequest){
-        CitaResponse cita = citaService.crearCita(citaRequest);
+        CitaResponse cita = appointmentService.crearCita(citaRequest);
         return ResponseEntity.ok(ApiResponse.success("Cita creada correctamente", cita));
     }
 
     @GetMapping
-    public ResponseEntity<List<Cita>> obtenerCitas(){
-        List<Cita> citas = citaService.obtenerCitas();
-        return ResponseEntity.ok(citas);
+    public ResponseEntity<List<Appointment>> obtenerCitas(){
+        List<Appointment> appointments = appointmentService.obtenerCitas();
+        return ResponseEntity.ok(appointments);
     }
 
 }

@@ -1,11 +1,9 @@
 package com.katusoft.barberstown.repository;
 
+import com.katusoft.barberstown.model.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.katusoft.barberstown.model.Cliente;
 
 import java.util.UUID;
 
-public interface ClienteRepository extends JpaRepository<Cliente, UUID>{
-
+public interface AppointmentRepository extends JpaRepository<Appointment, UUID> {
 }

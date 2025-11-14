@@ -1,11 +1,11 @@
 package com.katusoft.barberstown.controller;
 
 import com.katusoft.barberstown.exception.ClienteNoEncontradoException;
+import com.katusoft.barberstown.model.Customer;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.katusoft.barberstown.model.Cliente;
-import com.katusoft.barberstown.service.ClienteService;
+import com.katusoft.barberstown.service.CustomerService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,27 +25,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/api/clientes")
 @RequiredArgsConstructor
-public class ClienteController {
+public class CustomerController {
 
-    private final ClienteService clienteService;
+    private final CustomerService customerService;
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> getAll(){
-        List<Cliente> clientes = clienteService.getAll();
-        return ResponseEntity.ok(clientes);
-    }
-
-    @PostMapping
-    public ResponseEntity<Cliente> create(@RequestBody Cliente cliente){
-        Cliente nuevoCliente = clienteService.save(cliente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoCliente);
+    public ResponseEntity<List<Customer>> getAll(){
+        List<Customer> customers = customerService.getAll();
+        return ResponseEntity.ok(customers);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> getById(@PathVariable UUID id){
+    public ResponseEntity<Customer> getById(@PathVariable UUID id){
        try{
-        Cliente cliente = clienteService.getById(id);
-        return ResponseEntity.ok(cliente);
+        Customer customer = customerService.getById(id);
+        return ResponseEntity.ok(customer);
        } catch(ClienteNoEncontradoException ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
        }
@@ -54,7 +48,7 @@ public class ClienteController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteById(@PathVariable UUID id){
         try{
-            clienteService.deleteById(id);
+            customerService.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch(ClienteNoEncontradoException ex){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -62,10 +56,10 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> update(@PathVariable UUID id, @RequestBody Cliente cliente){
+    public ResponseEntity<Customer> update(@PathVariable UUID id, @RequestBody Customer customer){
         try{
-            Cliente clienteActualizado = clienteService.update(id, cliente);
-            return ResponseEntity.ok(clienteActualizado);
+            Customer customerActualizado = customerService.update(id, customer);
+            return ResponseEntity.ok(customerActualizado);
         } catch(ClienteNoEncontradoException ex){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

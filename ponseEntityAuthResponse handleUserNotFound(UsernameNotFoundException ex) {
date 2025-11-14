@@ -13,13 +13,13 @@
 * [1;34m594a6ac[m - [1;32m(5 months ago)[m [37mFeat: Se crea el archivo README[m [2;37m- Miguel Olarte[m[1;33m[m
 * [1;34m2e18aec[m - [1;32m(5 months ago)[m [37mFix: Se modifica estructura de la entidad barbero[m [2;37m- Miguel Olarte[m[1;33m[m
 * [1;34mc6b64d0[m - [1;32m(6 months ago)[m [37mFix: Se agrega constructor vacío en el modelo Cita para solucionar problema de error 500 al hacer get[m [2;37m- Miguel Olarte[m[1;33m[m
-* [1;34m8b64711[m - [1;32m(6 months ago)[m [37mFix: Se refactoriza el servicio de cliente y el controlador[m [2;37m- Miguel Olarte[m[1;33m[m
-* [1;34mca772a3[m - [1;32m(6 months ago)[m [37mFix: Se refactoriza el servicio de cita y el controlador, se utiliza lombok y se reescriben los métodos[m [2;37m- Miguel Olarte[m[1;33m[m
+* [1;34m8b64711[m - [1;32m(6 months ago)[m [37mFix: Se refactoriza el service de customer y el controlador[m [2;37m- Miguel Olarte[m[1;33m[m
+* [1;34mca772a3[m - [1;32m(6 months ago)[m [37mFix: Se refactoriza el service de appointment y el controlador, se utiliza lombok y se reescriben los métodos[m [2;37m- Miguel Olarte[m[1;33m[m
 * [1;34m4eed805[m - [1;32m(6 months ago)[m [37mFix: Se implementa Lombok en las clases modelo para evitar el boilerplate[m [2;37m- Miguel Olarte[m[1;33m[m
-* [1;34me80d434[m - [1;32m(6 months ago)[m [37mFix: Se refactoriza el servicio y controlador de barbero[m [2;37m- Miguel Olarte[m[1;33m[m
+* [1;34me80d434[m - [1;32m(6 months ago)[m [37mFix: Se refactoriza el service y controlador de barbero[m [2;37m- Miguel Olarte[m[1;33m[m
 * [1;34m7924af2[m - [1;32m(6 months ago)[m [37mFix: Se refactoriza el controlador MetodoPagoController, agregando comentarios y improvisado con Lombok[m [2;37m- Miguel Olarte[m[1;33m[m
 * [1;34ma6ab428[m - [1;32m(6 months ago)[m [37mFix: Se utiliza Lombok para reducir código boilerplate, en este caso el constructor y se renombran los métodos para omitir redundancias, se utiliza @Transactional para asegurar la integridad de las operaciones, se agregan comentarios para documentar los métodos[m [2;37m- Miguel Olarte[m[1;33m[m
-* [1;34m6772ee0[m - [1;32m(6 months ago)[m [37mfeat: Se implementa el método obtenerCitas en el servicio y el controlador, en el modelo Cita se utiliza la anotación @JsonIgnoreProperties({citas}) para evitar recursion infinita[m [2;37m- Miguel Olarte[m[1;33m[m
+* [1;34m6772ee0[m - [1;32m(6 months ago)[m [37mfeat: Se implementa el método obtenerCitas en el service y el controlador, en el modelo Cita se utiliza la anotación @JsonIgnoreProperties({appointments}) para evitar recursion infinita[m [2;37m- Miguel Olarte[m[1;33m[m
 * [1;34ma7ed11f[m - [1;32m(6 months ago)[m [37mfeat: Se implementa el método crearCita en CitaService igualmente se implementa en controller, se agrega @JsonIgnore en modelos Barbero y Cliente para evitar la recursión infinita[m [2;37m- Miguel Olarte[m[1;33m[m
 * [1;34mcf583f8[m - [1;32m(7 months ago)[m [37mfeat: Se crea la clase CitaService y se le agregan los métodos abstractos a CitaRepository, para generar consultas personalizadas[m [2;37m- Miguel Olarte[m[1;33m[m
 * [1;34m4b9f0ed[m - [1;32m(7 months ago)[m [37mfeat: Implementación del método updatePago() en el controlador y en el servicio[m [2;37m- Miguel Olarte[m[1;33m[m
@@ -30,13 +30,13 @@
 * [1;34m8f51b35[m - [1;32m(7 months ago)[m [37mfeat: Implementación del método actualizarMetodoPago() en el controlador y servicio[m [2;37m- Miguel Olarte[m[1;33m[m
 * [1;34m143ee3f[m - [1;32m(7 months ago)[m [37mfeat: Implementación del método deleteMedotoPagoById() en el controlador y en el servicio[m [2;37m- Miguel Olarte[m[1;33m[m
 * [1;34mf4c9e08[m - [1;32m(7 months ago)[m [37mfeat: Implementación del método getMetodoPagoById() en el controlador y servicio[m [2;37m- Miguel Olarte[m[1;33m[m
-* [1;34mcacb320[m - [1;32m(7 months ago)[m [37mfeat:Implementación del servicio MetodoPagoService, también se implementa controlador MetodoPagoController y métodos de obtención getAllMetodosPago() y saveMetodoPago()[m [2;37m- Miguel Olarte[m[1;33m[m
+* [1;34mcacb320[m - [1;32m(7 months ago)[m [37mfeat:Implementación del service MetodoPagoService, también se implementa controlador MetodoPagoController y métodos de obtención getAllMetodosPago() y saveMetodoPago()[m [2;37m- Miguel Olarte[m[1;33m[m
 * [1;34maaf40c3[m - [1;32m(7 months ago)[m [37mfeat: Implementación de la función actualizarServicio() en el controlador y el servicio[m [2;37m- Miguel Olarte[m[1;33m[m
-* [1;34m47392d0[m - [1;32m(7 months ago)[m [37mfeat: Implementación de la función deleteServicioById() en el controlador Servicio Controller, de igual manera se implementa el servicio que maneja la lógica que pasa al controlador[m [2;37m- Miguel Olarte[m[1;33m[m
+* [1;34m47392d0[m - [1;32m(7 months ago)[m [37mfeat: Implementación de la función deleteServicioById() en el controlador Servicio Controller, de igual manera se implementa el service que maneja la lógica que pasa al controlador[m [2;37m- Miguel Olarte[m[1;33m[m
 * [1;34m7f96c2c[m - [1;32m(7 months ago)[m [37mfeat: Implementación de la función getServicioById() en el controlador ServicioController[m [2;37m- Miguel Olarte[m[1;33m[m
 * [1;34m08e4c8e[m - [1;32m(7 months ago)[m [37mfeat: Implementaión de los métodos para controlador de Barbero y Cliente para modificar datos[m [2;37m- Miguel Olarte[m[1;33m[m
 * [1;34m7d2f87f[m - [1;32m(7 months ago)[m [37mfeat: Se agregan los servicios para buscar por id y borrar por id para el modelo barbero[m [2;37m- Miguel Olarte[m[1;33m[m
-* [1;34ma376375[m - [1;32m(7 months ago)[m [37mfeat: Integración del modelo servicio con sus respectivos controladores y servicios[m [2;37m- Miguel Olarte[m[1;33m[m
+* [1;34ma376375[m - [1;32m(7 months ago)[m [37mfeat: Integración del modelo service con sus respectivos controladores y servicios[m [2;37m- Miguel Olarte[m[1;33m[m
 * [1;34mc29dcf6[m - [1;32m(7 months ago)[m [37mfeat: Ignorar appliation.properties[m [2;37m- Miguel Olarte[m[1;33m[m
 *   [1;34m6c329c8[m - [1;32m(7 months ago)[m [37mMerge branch 'main' of https://github.com/olarte91/barberstown[m [2;37m- Miguel Olarte[m[1;33m[m
 [32m|[m[33m\[m  

@@ -1,9 +1,9 @@
 package com.katusoft.barberstown.dto;
 
 import com.katusoft.barberstown.enums.EstadoCita;
-import com.katusoft.barberstown.model.Barbero;
-import com.katusoft.barberstown.model.Cliente;
-import com.katusoft.barberstown.model.Servicio;
+import com.katusoft.barberstown.model.Barber;
+import com.katusoft.barberstown.model.Customer;
+import com.katusoft.barberstown.model.Service;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,9 +18,9 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class CitaResponse {
-  private Barbero barbero;
-  private Cliente cliente;
-  private Servicio servicio;
+  private Barber barber;
+  private Customer customer;
+  private Service service;
   private LocalDateTime fechaHora;
   private EstadoCita estadoCita;
   private double valor;

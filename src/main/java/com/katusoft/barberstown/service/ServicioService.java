@@ -4,13 +4,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.katusoft.barberstown.exception.ServicioNoEncontradoException;
-import org.springframework.stereotype.Service;
-
-import com.katusoft.barberstown.model.Servicio;
+import com.katusoft.barberstown.model.Service;
 import com.katusoft.barberstown.repository.ServicioRepository;
 
-@Service
+@org.springframework.stereotype.Service
 public class ServicioService {
     private final ServicioRepository servicioRepository;
 
@@ -18,16 +15,16 @@ public class ServicioService {
         this.servicioRepository = servicioRepository;
     }
 
-    public List<Servicio> getAllServicios(){
+    public List<Service> getAllServicios(){
         return servicioRepository.findAll();
     }
 
-    public Servicio saveServicio(Servicio servicio){
+    public Service saveServicio(Service service){
         
-        return servicioRepository.save(servicio);
+        return servicioRepository.save(service);
     }
 
-    public Optional<Servicio> getServicioById(UUID id){
+    public Optional<Service> getServicioById(UUID id){
         return servicioRepository.findById(id);
     }
 
