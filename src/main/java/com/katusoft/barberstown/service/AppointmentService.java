@@ -7,6 +7,7 @@ import java.util.UUID;
 import com.katusoft.barberstown.dto.AppointmentRequest;
 import com.katusoft.barberstown.dto.AppointmentResponse;
 import com.katusoft.barberstown.exception.BarberoNoEncontradoException;
+import com.katusoft.barberstown.exception.HorarioNoDisponibleException;
 import com.katusoft.barberstown.exception.ServicioNoEncontradoException;
 import com.katusoft.barberstown.model.Appointment;
 import com.katusoft.barberstown.model.Barber;
@@ -23,43 +24,49 @@ import com.katusoft.barberstown.repository.AppointmentRepository;
 @org.springframework.stereotype.Service
 @AllArgsConstructor
 public class AppointmentService {
-    private  final AppointmentRepository appointmentRepository;
-    private  final BarberRepository barberRepository;
-    private  final ServicioRepository servicioRepository;
-    private  final CustomerRepository customerRepository;
+  private final AppointmentRepository appointmentRepository;
+  private final BarberRepository barberRepository;
+  private final ServicioRepository servicioRepository;
+  private final CustomerRepository customerRepository;
 
 
-    //Crear una nueva cita
-    public AppointmentResponse crearCita(AppointmentRequest appointmentRequest){
+  //Crear una nueva cita
+  public AppointmentResponse createAppointment(AppointmentRequest appointmentRequest) {
 
-      Barber barber = barberRepository.findById(appointmentRequest.getBarberoId())
-          .orElseThrow( () -> new BarberoNoEncontradoException("No se encontró el barbero"));
+  if (!isTimeSlotAvailable(appointmentRequest.getFechaHora(), appointmentRequest.getBarberoId())) {
 
-      Customer customer = customerRepository.findById(appointmentRequest.getClienteId())
-          .orElseThrow( () -> new BarberoNoEncontradoException("No se encontró el cliente"));
-
-      Service service = servicioRepository.findById(appointmentRequest.getServicioId())
-          .orElseThrow( () -> new ServicioNoEncontradoException("No se encontró el servicio"));
-
-        Appointment newAppointment = Appointment.builder()
-            .barber(barber)
-            .customer(customer)
-            .service(service)
-            .dateTime(appointmentRequest.getFechaHora())
-            .valor(appointmentRequest.getValor())
-            .estado(appointmentRequest.getEstado())
-            .build();
-
-      appointmentRepository.save(newAppointment);
-
-        return this.toDto(newAppointment);
+      throw new HorarioNoDisponibleException("El horario no está disponible para este barbero");
     }
 
-    public List<Appointment> obtenerCitas(){
-        return appointmentRepository.findAll();
-    }
+    Barber barber = barberRepository.findById(appointmentRequest.getBarberoId())
+        .orElseThrow(() -> new BarberoNoEncontradoException("No se encontró el barbero"));
 
-  private AppointmentResponse toDto(Appointment appointment){
+    Customer customer = customerRepository.findById(appointmentRequest.getClienteId())
+        .orElseThrow(() -> new BarberoNoEncontradoException("No se encontró el cliente"));
+
+    Service service = servicioRepository.findById(appointmentRequest.getServicioId())
+        .orElseThrow(() -> new ServicioNoEncontradoException("No se encontró el servicio"));
+
+    Appointment newAppointment = Appointment.builder()
+        .barber(barber)
+        .customer(customer)
+        .service(service)
+        .dateTime(appointmentRequest.getFechaHora())
+        .valor(appointmentRequest.getValor())
+        .estado(appointmentRequest.getEstado())
+        .build();
+
+    appointmentRepository.save(newAppointment);
+
+    return this.toDto(newAppointment);
+
+  }
+
+  public List<Appointment> obtenerCitas() {
+    return appointmentRepository.findAll();
+  }
+
+  private AppointmentResponse toDto(Appointment appointment) {
     return new AppointmentResponse().builder()
         .barber(appointment.getBarber())
         .customer(appointment.getCustomer())
@@ -70,8 +77,8 @@ public class AppointmentService {
         .build();
   }
 
-  public boolean isTimeSlotAvailable(LocalDateTime dateTime, UUID barberId){
-     return !appointmentRepository.findByBarberIdAndDateTime(dateTime, barberId);
+  public boolean isTimeSlotAvailable(LocalDateTime dateTime, UUID barberId) {
+    return !appointmentRepository.findByBarberIdAndDateTime(dateTime, barberId);
   }
 
 

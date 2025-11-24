@@ -26,7 +26,7 @@ public class AppointmentController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<AppointmentResponse>> crearCita(@RequestBody AppointmentRequest appointmentRequest){
-        AppointmentResponse cita = appointmentService.crearCita(appointmentRequest);
+        AppointmentResponse cita = appointmentService.createAppointment(appointmentRequest);
         return ResponseEntity.ok(ApiResponse.success("Cita creada correctamente", cita));
     }
 
