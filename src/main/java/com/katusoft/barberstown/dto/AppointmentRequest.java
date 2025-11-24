@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CitaRequest {
+public class AppointmentRequest {
     private UUID clienteId;
     private UUID barberoId;
     private UUID servicioId;

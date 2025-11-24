@@ -1,9 +1,11 @@
 package com.katusoft.barberstown.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
-import com.katusoft.barberstown.dto.CitaRequest;
-import com.katusoft.barberstown.dto.CitaResponse;
+import com.katusoft.barberstown.dto.AppointmentRequest;
+import com.katusoft.barberstown.dto.AppointmentResponse;
 import com.katusoft.barberstown.exception.BarberoNoEncontradoException;
 import com.katusoft.barberstown.exception.ServicioNoEncontradoException;
 import com.katusoft.barberstown.model.Appointment;
@@ -28,24 +30,24 @@ public class AppointmentService {
 
 
     //Crear una nueva cita
-    public CitaResponse crearCita(CitaRequest citaRequest){
+    public AppointmentResponse crearCita(AppointmentRequest appointmentRequest){
 
-      Barber barber = barberRepository.findById(citaRequest.getBarberoId())
+      Barber barber = barberRepository.findById(appointmentRequest.getBarberoId())
           .orElseThrow( () -> new BarberoNoEncontradoException("No se encontró el barbero"));
 
-      Customer customer = customerRepository.findById(citaRequest.getClienteId())
+      Customer customer = customerRepository.findById(appointmentRequest.getClienteId())
           .orElseThrow( () -> new BarberoNoEncontradoException("No se encontró el cliente"));
 
-      Service service = servicioRepository.findById(citaRequest.getServicioId())
+      Service service = servicioRepository.findById(appointmentRequest.getServicioId())
           .orElseThrow( () -> new ServicioNoEncontradoException("No se encontró el servicio"));
 
         Appointment newAppointment = Appointment.builder()
             .barber(barber)
             .customer(customer)
             .service(service)
-            .fechaHora(citaRequest.getFechaHora())
-            .valor(citaRequest.getValor())
-            .estado(citaRequest.getEstado())
+            .dateTime(appointmentRequest.getFechaHora())
+            .valor(appointmentRequest.getValor())
+            .estado(appointmentRequest.getEstado())
             .build();
 
       appointmentRepository.save(newAppointment);
@@ -57,15 +59,20 @@ public class AppointmentService {
         return appointmentRepository.findAll();
     }
 
-  private CitaResponse toDto(Appointment appointment){
-    return new CitaResponse().builder()
+  private AppointmentResponse toDto(Appointment appointment){
+    return new AppointmentResponse().builder()
         .barber(appointment.getBarber())
         .customer(appointment.getCustomer())
         .service(appointment.getService())
         .valor(appointment.getValor())
-        .fechaHora(appointment.getFechaHora())
+        .fechaHora(appointment.getDateTime())
         .estadoCita(appointment.getEstado())
         .build();
   }
+
+  public boolean isTimeSlotAvailable(LocalDateTime dateTime, UUID barberId){
+     return !appointmentRepository.findByBarberIdAndDateTime(dateTime, barberId);
+  }
+
 
 }

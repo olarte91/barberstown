@@ -3,6 +3,7 @@ package com.katusoft.barberstown.service;
 import com.katusoft.barberstown.dto.AuthResponse;
 import com.katusoft.barberstown.dto.LoginRequest;
 import com.katusoft.barberstown.dto.RegisterRequest;
+import com.katusoft.barberstown.enums.Role;
 import com.katusoft.barberstown.enums.UserStatus;
 import com.katusoft.barberstown.enums.UserType;
 import com.katusoft.barberstown.exception.UserAlreadyExistsException;
@@ -38,7 +39,7 @@ public class AuthService {
         .email(request.getEmail())
         .password(passwordEncoder.encode(request.getPassword()))
         .username(request.getUsername())
-        .role(request.getRole())
+        .role(Role.USER)
         .userType(request.getUserType())
         .userStatus(UserStatus.ACTIVE)
         .build();

@@ -48,7 +48,7 @@ public class Appointment {
     private Service service;
 
     @Column(nullable = false, name = "fecha_hora")
-    private LocalDateTime fechaHora;
+    private LocalDateTime dateTime;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "estado_cita")

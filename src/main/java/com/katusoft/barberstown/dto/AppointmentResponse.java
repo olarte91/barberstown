@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class CitaResponse {
+public class AppointmentResponse {
   private Barber barber;
   private Customer customer;
   private Service service;

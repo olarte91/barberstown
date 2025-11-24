@@ -28,7 +28,6 @@ public class BarberService {
         .name(request.getName())
         .lastname(request.getLastname())
         .phone(request.getPhone())
-        .image(request.getImage())
         .build();
 
     return barberRepository.save(barber);
